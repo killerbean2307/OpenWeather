@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     margin: 5,
     marginTop: 30,
-    backgroundColor: "rgba(0,0,0,0.2)"
+    backgroundColor: "rgba(255,255,255,0.1)"
   },
   listItem: {
     borderRadius: 5,

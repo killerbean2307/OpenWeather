@@ -93,6 +93,7 @@ class HomeScreen extends Component {
                 this.props.forecast.error.response.data.message}
             </Text>
             <Button
+              raised
               title="Find another location"
               onPress={() => {
                 this.props.navigation.navigate("SearchLocation");
