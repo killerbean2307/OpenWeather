@@ -15,9 +15,17 @@ class SplashScreen extends Component {
     this._bootstrapAsync();
   }
 
+  _wait = ms => {
+    return new Promise((resolve, reject) => {
+      setTimeout(resolve, ms);
+    });
+  };
+
   _bootstrapAsync = async () => {
-    const location = await AsyncStorage.getItem("location");
-    await new Promise((resolve, reject) => {setTimeout(resolve, 1000)})
+    const location = AsyncStorage.getItem("location");
+    const wait = this._wait(1000);
+    await location;
+    await wait;
     if (!location) {
       this.props.navigation.navigate("SearchLocation");
     } else {
@@ -41,17 +49,18 @@ class SplashScreen extends Component {
           </Text>
           <View style={{ width: imageWidth, height: imageWidth }}>
             <LottieView
-              source={require("../lotties/4791-foggy.json")}
+              source={require("../lotties/2115-suncloud.json")}
               autoPlay
               loop
               style={{ width: "100%", height: "100%" }}
+              resizeMode="cover"
             />
           </View>
-          <Text style={styles.loadingText}>
-            {this.props.currentWeather.isDone ? "" : "Loading..."}
-          </Text>
+          <Text style={styles.loadingText}>Loading...</Text>
         </View>
-        <Text style={{ fontSize: 10 }}>made with OpenWeatherMap</Text>
+        <Text style={{ fontSize: 10, color: "gray", marginBottom: 5 }}>
+          made with OpenWeatherMap
+        </Text>
       </View>
     );
   }

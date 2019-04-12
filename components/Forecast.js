@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { View, StyleSheet, FlatList, ActivityIndicator } from "react-native";
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  ActivityIndicator,
+  Dimensions
+} from "react-native";
 import { Text, Card } from "react-native-elements";
 import { connect } from "react-redux";
 import { getForecast } from "../actions";
@@ -7,13 +13,21 @@ import { renderWeatherIcon } from "../utils/weatherIcon";
 import LinearGradient from "react-native-linear-gradient";
 import moment from "moment";
 
+const screenHeight = Dimensions.get("screen").height;
+
 class Forecast extends Component {
-  renderItem = ({ item }) => {
+  renderItem = ({ item, index }) => {
     return (
-      <Card containerStyle={styles.listItem} key={item.dt}>
+      <View style={styles.listItem} key={`forecast_${item.dt}`}>
         <LinearGradient
-          colors={["#6a93e4", "#4379e3", "#2969e6"]}
-          style={{ flex: 1, borderRadius: 5, justifyContent: "center", paddingHorizontal: 10 }}
+          colors={["#48c6ef", "#6f86d6"]}
+          style={{
+            flex: 1,
+            borderRadius: 5,
+            justifyContent: "center",
+            paddingHorizontal: 10,
+            elevation: 1
+          }}
         >
           <View style={{ alignSelf: "center" }}>
             {renderWeatherIcon(item.weather[0].icon, 20)}
@@ -25,16 +39,14 @@ class Forecast extends Component {
             {moment.unix(item.dt).format("HH:mm")}
           </Text>
         </LinearGradient>
-      </Card>
+      </View>
     );
   };
 
   render() {
+    console.log(this.props.forecast.data);
     return (
-      <View
-        colors={["#3b5998","#192f6a", "#3b5998"]}
-        style={styles.container}
-      >
+      <View colors={["#3b5998", "#192f6a", "#3b5998"]} style={styles.container}>
         <View
           style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
         >
@@ -47,9 +59,10 @@ class Forecast extends Component {
               <Text
                 style={{
                   textAlign: "center",
-                  fontWeight: "bold",
+                  fontWeight: "500",
                   fontSize: 25,
-                  color: "white"
+                  color: "white",
+                  paddingBottom: 10
                 }}
               >
                 24h Forecast
@@ -57,7 +70,9 @@ class Forecast extends Component {
               <FlatList
                 style={{ margin: 0 }}
                 horizontal={true}
-                data={this.props.forecast.data.list.splice(0, 9)}
+                data={this.props.forecast.data.list.filter((item, index) => {
+                  return index < 9;
+                })}
                 keyExtractor={item => {
                   item.dt;
                 }}
@@ -77,24 +92,23 @@ class Forecast extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
-    height: 185,
+    height: screenHeight / 3.5,
     alignItems: "center",
     borderRadius: 20,
     margin: 5,
     marginTop: 30,
-    backgroundColor: "rgba(255,255,255,0.1)"
+    backgroundColor: "rgba(255,255,255,0.2)"
   },
   listItem: {
     borderRadius: 5,
-    flex:1,
+    flex: 1,
     alignItems: "center",
-    marginRight: 5,
-    marginLeft: 5,
+    marginHorizontal: 5,
     padding: 0,
     backgroundColor: "transparent",
     justifyContent: "center",
-    borderColor: "transparent"
+    borderColor: "transparent",
+    borderWidth: 0
   }
 });
 
