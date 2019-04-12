@@ -7,7 +7,8 @@ import {
   ImageBackground,
   FlatList,
   AsyncStorage,
-  ActivityIndicator
+  ActivityIndicator,
+  StatusBar
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome5";
 import { connect } from "react-redux";
@@ -48,6 +49,8 @@ class HomeScreen extends Component {
           }
         ]}
       >
+        <StatusBar hidden />
+
         {this.props.currentWeather.data && this.props.forecast.data && (
           <View style={{ flex: 1 }}>
             <CurrentWeather />
